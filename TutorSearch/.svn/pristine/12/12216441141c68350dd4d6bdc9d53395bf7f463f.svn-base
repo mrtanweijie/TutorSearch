@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name></display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- URL重写配置 -->
+	<filter>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+		<init-param>
+			<param-name>logLevel</param-name>
+			<param-value>WARN</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern><!-- 拦截所有URL -->
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>TutorSearch</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/applicationContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	
+	<!-- 编码 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<servlet-mapping>
+		<servlet-name>TutorSearch</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- 浏览器不支持put,delete等method,由该filter将/blog?_method=delete转换为标准的http delete方法 -->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>TutorSearch</servlet-name>
+	</filter-mapping>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.css</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.gif</url-pattern>
+
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.jpg</url-pattern>
+	</servlet-mapping>
+	
+		<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.png</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.js</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	
+	<!-- log -->
+	<context-param>
+      <param-name>log4jConfigLocation</param-name>
+      <param-value>classpath:log4j.properties</param-value>
+   </context-param>
+   <context-param>
+      <param-name>log4jRefreshInterval</param-name>
+      <param-value>6000</param-value>
+   </context-param>
+    <listener>
+      <listener-class>
+        org.springframework.web.util.Log4jConfigListener
+      </listener-class>
+   </listener>
+   
+    <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>myApp.root</param-value>
+</context-param>
+
+    
+    <!-- 管理员配置登陆过滤器 -->
+	<filter>
+		<filter-name>adminlogin</filter-name>
+		<filter-class>tan.code.utils.AdminLoginFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>adminlogin</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+	
+	    <!-- 普通用户配置登陆过滤器 -->
+	<filter>
+		<filter-name>userlogin</filter-name>
+		<filter-class>tan.code.utils.UserLoginFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>userlogin</filter-name>
+		<url-pattern>/user/*</url-pattern>
+	</filter-mapping>
+	
+	
+    
+</web-app>

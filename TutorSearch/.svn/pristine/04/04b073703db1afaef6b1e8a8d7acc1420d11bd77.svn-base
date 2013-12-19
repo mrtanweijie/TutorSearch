@@ -1,0 +1,33 @@
+package tan.code.model;
+
+public class LoginInfo {
+	private String name;// ĞÕÃû
+	private String password;// ÃÜÂë
+
+	private String check;//ÑéÖ¤Âë
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getCheck() {
+		return check;
+	}
+
+	public void setCheck(String check) {
+		this.check = check;
+	}
+	
+}

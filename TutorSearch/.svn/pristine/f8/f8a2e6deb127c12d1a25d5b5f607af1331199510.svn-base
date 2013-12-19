@@ -1,0 +1,35 @@
+package tan.code.test;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.lucene.document.DateTools;
+import org.junit.Test;
+
+import tan.code.model.Tutor;
+import tan.code.utils.SQLStringHelper;
+
+public class MyTest {
+
+	@Test
+	public void test() throws ParseException {
+		// fail("Not yet implemented");
+		// Tutor tutor=new Tutor();
+
+		SQLStringHelper<Tutor> sqlStringHelper = new SQLStringHelper<Tutor>();
+		System.out.println(sqlStringHelper.createSelectByEntityId(Tutor.class, 2));
+
+		// BaseDao<Tutor> baseDao =new BaseDao<Tutor>();
+		// baseDao.getEntity(1);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		System.out.println("格式化："+sdf.format(DateTools.stringToDate("20131011")));
+		
+		System.out.println("未格式化："+DateTools.stringToDate("2013-10-11"));
+		
+		System.out.println("Date to String："+DateTools.dateToString(new Date(), DateTools.Resolution.DAY));
+	}
+
+}

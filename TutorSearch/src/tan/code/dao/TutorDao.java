@@ -1,0 +1,69 @@
+package tan.code.dao;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+
+import org.apache.lucene.document.Document;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.springframework.stereotype.Component;
+
+import tan.code.model.Tutor;
+import tan.code.utils.LuceneHelper;
+import tan.code.utils.RelateWords;
+
+@Component
+public class TutorDao {
+
+	private LuceneHelper<Tutor> luceneHelper = new LuceneHelper<Tutor>();
+
+	// 保存-添加索引
+	public void add(String indexWriterPath, Tutor tutor) {
+		luceneHelper.add(indexWriterPath, tutor);
+	}
+
+	// 多条件查找
+	public List<Tutor> search(String indexReadPath, String searchText) {
+		String fields[] = { "title", "subject", "content", "province", "city", "region", "date","end","others" };
+		return luceneHelper.simpleSearch(indexReadPath, fields, searchText);
+	}
+	
+	// 科目查找
+	public List<Tutor> searchBySubject(String indexReadPath, String searchText) {
+		String fields[] = {"subject"};
+		return luceneHelper.simpleSearch(indexReadPath, fields, searchText);
+	}
+	
+	public List<Tutor> searchByDateRange(String indexReadPath, long begin, long end) {
+		return luceneHelper.searchByDateRange(indexReadPath, begin, end);
+	}
+	
+	// 城市查找
+	public List<Tutor> searchByCity(int num,String indexReadPath, String city){
+		return luceneHelper.booleanQuery(num,indexReadPath, null, city, null, null, null);
+	}
+	
+	/**
+	 * 相关搜索
+	 * @param words 用于添加索引的用户的搜索
+	 * @param word 用户的搜索
+	 * @return 相关搜索列表
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public List<String> relatewords(HashSet<String> words, String word) throws IOException, ParseException {
+		return RelateWords.filterRelated(words, word);
+	}
+	
+	public Document getDocumentById(String indexReadPath, int docid) throws IOException{
+		return luceneHelper.getDocumentById(indexReadPath, docid);
+		}
+	
+	public void update(String indexReadPath,String id,Tutor tutor) {
+		luceneHelper.updateById(indexReadPath, id, tutor);
+	}
+	
+	public void updateBrowse(String indexReadPath,String id,int browse) {
+		luceneHelper.updateBrowse(indexReadPath, id,browse);
+	}
+}

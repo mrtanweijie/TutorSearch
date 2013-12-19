@@ -1,0 +1,117 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>管理员登录</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+<script language="javascript" type="text/javascript">
+	var request;
+	function createRequest() {
+		if (window.ActiveXobject) {
+			request = new ActiveXObject("Microsoft.XMLHTTP");//判断浏览器是否是IE并且是否支持XMLHttpRequest对象
+		} else if (window.XMLHttpRequest) { //判断浏览器是否支持XMLHttpRequest对象
+			request = new XMLHttpRequest();
+
+		}
+
+	}
+
+	function login() {
+		createRequest();
+		var name = document.getElementById("name").value;
+		var password= document.getElementById("password").value;
+		//var check=document.getElementById("check").value;
+		var url = "user/admin_login?name="+name+"&password="+password;
+		request.open("POST", url, true);
+		request.onreadystatechange = handleStateChange;
+		request.send(null);
+	}
+
+	function handleStateChange() {
+		if (request.readyState == 4) {
+			if (request.status = 200) {
+				//alert("OK!");
+				var result = request.responseText;
+				//alert(result);
+				if(result=="success"){window.location.href="admin/index.jsp";}
+				else{
+					var div = document.getElementById("result");
+					div.innerHTML = "<b>登录失败</b>";
+				}
+				
+				
+			}
+		}
+	}
+</script>
+  </head>
+  
+ <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" background="">
+<!-- Save for Web Slices (login-form.psd) -->
+<table width="570" height="480" border="0" align="center" cellpadding="0" cellspacing="0" id="__01" style="margin-top:80px">
+	<tr>
+		<td colspan="6"><img src="images/login-form_01.jpg" width="455" height="100" alt=""></td>
+		<td rowspan="8">
+			<img src="images/login-form_02.jpg" width="115" height="380" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="7">
+			<img src="images/login-form_03.jpg" width="116" height="280" alt=""></td>
+		<td colspan="4">
+			<img src="images/login-form_04.jpg" width="337" height="55" alt=""></td>
+		<td rowspan="7">
+			<img src="images/login-form_05.jpg" width="2" height="280" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="6">
+			<img src="images/login-form_06.jpg" width="24" height="225" alt=""></td>
+		<td colspan="2">
+			<input type="text" name="name" id="name" style="width:290px; height:35px" ></td>
+		<td rowspan="6">
+			<img src="images/login-form_08.jpg" width="23" height="225" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<img src="images/login-form_09.jpg" width="290" height="45" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="password" name="password" id="password" style="width:290px; height:35px" ></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<img src="images/login-form_11.jpg" width="290" height="59" alt=""></td>
+	</tr>
+	<tr>
+		<td rowspan="2">
+			<img src="images/login-form_12.jpg" width="215" height="51" alt=""></td>
+		<td>
+        <input type="button" style="width:75px; height:28px; background:url(images/login-form_13.jpg); no-repeat; border:none; " onclick="login();"></td>
+	</tr>
+	<tr>
+		<td>
+			<img src="images/login-form_14.jpg" width="75" height="23" alt=""></td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			<img src="images/login-form_15.jpg" width="570" height="100" alt=""></td>
+	</tr>
+</table>
+<!-- End Save for Web Slices -->
+</body>
+</html>

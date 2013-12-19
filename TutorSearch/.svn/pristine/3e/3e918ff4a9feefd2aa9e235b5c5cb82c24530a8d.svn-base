@@ -1,0 +1,155 @@
+package tan.code.controller;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.log4j.Logger;
+import org.apache.lucene.document.DateTools;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import tan.code.model.Tutor;
+import tan.code.model.TutorSearchInfo;
+import tan.code.service.TutorService;
+
+@Controller
+@RequestMapping("/tutor")
+public class TutorController {
+	private static Logger logger =Logger.getLogger(TutorController.class);
+	private TutorService tutorService;
+	private List<Tutor> tutors;
+
+	public TutorService getTutorService() {
+		return tutorService;
+	}
+
+	@Resource
+	public void setTutorService(TutorService tutorService) {
+		this.tutorService = tutorService;
+	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String create(Tutor tutor) {
+
+		// tutor.setId(0);// 索引文件中的信息不添加id//或者使用工具生成？会造成冲突。
+		tutor.setBrowse(0);// 初始化浏览次数为0
+		tutor.setWb_num(0);// 初始化被举报的此时为0
+
+		// String curdate = "";
+		// Date dt = new Date(); // 获取当前系统时间，作为发布时间
+		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 日期格式
+		// curdate = sdf.format(dt);
+		
+		tutor.setDate(DateTools.dateToString(new Date(), DateTools.Resolution.DAY));
+		
+		//转换客户输入的结束日期
+		//System.out.println(tutor.getEnd());
+		
+		String e_date=tutor.getEnd().replace("-", "");
+		
+		//System.out.println(e_date);
+		
+		tutor.setEnd(e_date);
+		
+		tutorService.add(tutor);
+
+		return "/success.jsp";
+	}
+
+	//全部信息混合查找
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search(String searchText, ModelMap map) {
+		logger.info("用户搜索:"+searchText);
+		long begin = System.currentTimeMillis();
+		tutors = tutorService.search(searchText);
+		long end = System.currentTimeMillis();
+		
+		//相关搜索-备注：由于这里是从新打开索引，所以会影响效率，可以改为在搜索里面直接传值调用-20131010-twj
+		HashSet<String> words = new HashSet<String>();
+		words.add(searchText);
+		List<String> rws_list=tutorService.relatewords(words, searchText);
+		map.put("rws_list", rws_list);
+		
+		String totalTime = String.valueOf(end - begin);
+		if (tutors.size() == 0) {
+			return "/tutor/nodata.jsp";
+		} else {
+			map.put("tutors", tutors);
+			map.put("totalTime", totalTime);
+			return "tutorslist.ftl";
+		}
+
+	}
+
+	//自定义混合查找
+	@RequestMapping(value = "/s_multi", method = RequestMethod.GET)
+	public String searchByMulti(TutorSearchInfo tutorSearchInfo, ModelMap map) {
+		if (tutorSearchInfo.getCity()!=null) {
+			//tutorService.
+		}
+		return null;
+	}
+	
+	// 按城市查找
+	@RequestMapping(value = "/s_city", method = RequestMethod.GET)
+	public String searchByCity(String city, ModelMap map) {
+		long begin = System.currentTimeMillis();
+		tutors = tutorService.searchByCity(city);
+		long end = System.currentTimeMillis();
+		String totalTime = String.valueOf(end - begin);
+		
+		// 相关搜索-备注：由于这里是从新打开索引，所以会影响效率，可以改为在搜索里面直接传值调用-20131010-twj
+		HashSet<String> words = new HashSet<String>();
+		words.add(city);
+		List<String> rws_list = tutorService.relatewords(words, city);
+		map.put("rws_list", rws_list);
+		
+		if (tutors.size() == 0) {
+			return "/tutor/nodata.jsp";
+		} else {
+			map.put("tutors", tutors);
+			map.put("totalTime", totalTime);
+			return "tutorslist.ftl";
+		}
+	}
+	
+	
+	// 按发布日期范围查找
+	@RequestMapping(value = "/s_date", method = RequestMethod.GET)
+	public String searchByDateRange(String begin, String end, ModelMap map) {
+		String b_date = begin.replace("-", "");
+		String e_date = end.replace("-", "");
+		tutors = tutorService.searchByDateRange(Long.valueOf(b_date), Long.valueOf(e_date));
+		List<String> rws_list=new ArrayList<String>();
+		rws_list.add("无相关");
+		map.put("rws_list", rws_list);
+
+		if (tutors.size() == 0) {
+			return "/tutor/nodata.jsp";
+		} else {
+			map.put("tutors", tutors);
+			map.put("totalTime", "1");
+			return "tutorslist.ftl";
+		}
+	}
+
+	@RequestMapping(value ="/show/{id}",method = RequestMethod.GET)
+	public String getTutor(@PathVariable("id")String id,ModelMap map) {
+
+		Tutor tutor = tutorService.getTutorByDocmentId(Integer.parseInt(id));
+		System.out.println(id);
+		System.out.println(tutor.getTitle());
+		System.out.println(tutor.getContent());
+		map.put("tutor", tutor);
+		return "tutor_data.ftl";
+	}
+
+}

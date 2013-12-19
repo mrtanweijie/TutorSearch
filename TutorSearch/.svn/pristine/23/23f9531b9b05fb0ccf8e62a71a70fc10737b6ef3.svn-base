@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="../css/tour.css"/>
+  <title>head</title>
+  </head>
+  <body>
+  <div class="allbody">
+  <div class="header">
+  <ul>
+  <li><a href="#">登陆</a></li>  <li>|</li>
+  <li><a href="#">注册</a></li>  <li>|</li>
+  <li><a href="#">帮助</a></li>  <li>|</li>
+  <li><a href="#">收藏本站</a></li>
+  </ul>
+  </div>
+  <!--导航 -->
+  <div class="content">
+
+ <!--logo-->
+<div style="float:left; width:230px; margin-top:25px; margin-left:140px;">
+<img src="../images/logo_06.jpg" width="230" height="65" alt="logo" />
+</div>
+<div class="nav"> <ul>
+<li><a href="../index-1.jsp">首页</a></li>
+<li><a href="#">家教</a></li>
+<li><a href="add_tutor.jsp">家教发布</a></li>
+<li><a href="#">高级搜索</a></li>
+<li><a href="#">兼职</a></li>
+<li><a href="#">讨论区</a></li>
+<li><a href="#">分享区</a></li></ul>
+</div>
+</div>
+ 
+  <div style="border-top:#4f9fdf solid 2px; width:100%; margin-top:1px; height:600px; position:absolute; z-index:1px;"> 
+  <div style="width:70%; margin-left:auto; margin-right:auto; height:100px;">
+  <!-- 搜索框-->
+  <div style="border:#CCC thin solid; height:50px; margin-top:20px">
+    <img src="../images/st.jpg" width="626" height="48" alt="st" />
+  </div>
+  <!--搜索结果-->
+  <div style="border:#CCC thin solid;margin-top:20px">
+  <div style="font-size:15px; color:#999; margin-left:20px;margin-top:10px">本次共100条搜索结果，共耗时${totalTime}豪秒</div>
+  
+ <#list tutors as tutor>  
+<div style="width:80%;margin-left:20px; margin-top:35px; height:80px">
+  <div id="t_title" style=" float:left; width:100%">
+  <a href="/TutorSearch/tutor/show/${tutor.id}">
+  <span style="font-size:20px; color:#333; font-weight:bold">${tutor.title}</span>
+  </a>
+  </div>
+  
+  <div id="t_content" style="float:left; width:100%; height:auto;font-size:15px; color:#333;margin-top:10px">
+${tutor.content}</div>
+  
+  <div id="t_url" style="float:left; width:60%;margin-top:10px">
+  <a href="/TutorSearch/tutor/show/${tutor.id}"><span style="color:#36C">http://localhost:8080/TutorSearch/tutor/show/${tutor.id}</span></a>
+  </div>
+  <div id="t_date" style="float:left; width:30%; margin-left:15px;margin-top:10px">
+  <span style="color:#36C">${tutor.date}</span>
+  </div>
+</div>
+  </#list>
+  
+   <div style="height:35px;margin-left:20px;margin-top:10px">
+ <span style=" font-size:20px; font-weight:bold;color:#333;">相关搜索</span>
+ </div>
+ 
+ <div style="height:35px;margin-left:20px;">
+  <#list rws_list as list>
+ <a href="/TutorSearch//tutor/search?searchText=${list}">
+ <span style=" font-size:15px;color:#333; margin-right:15px"> ${list}</span></a>
+ </#list>
+ </div>
+  </div>
+  </div> 
+  </div>
+  </div>
+  </body>
+</html>

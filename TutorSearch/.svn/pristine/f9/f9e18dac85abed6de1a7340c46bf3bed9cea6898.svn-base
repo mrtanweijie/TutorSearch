@@ -1,0 +1,93 @@
+package tan.code.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import tan.code.utils.SQLStringHelper;
+
+/**
+ * 通用数据库操作类
+ * 
+ * @author Mr_Tank_
+ * 
+ */
+@Component
+public class BaseDao<T> {
+	// private Class<T> entityClass;
+	private JdbcTemplate jdbcTemplate;
+	private SQLStringHelper<T> sqlStringHelper;
+
+	/**
+	 * 添加
+	 * 
+	 * @param entity
+	 */
+	public void add(T entity) {
+		jdbcTemplate.execute(sqlStringHelper.createInsert(entity));
+	}
+
+	/**
+	 * 根据id删除
+	 * 
+	 * @param class1类
+	 * @param id
+	 *            实体id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public int delete(Class class1, int id) {
+		return jdbcTemplate.update(sqlStringHelper.createDelete(class1, id));
+	}
+
+	/**
+	 * 根据id 更新实体
+	 * 
+	 * @param entity
+	 * @param id
+	 * @return
+	 */
+	public int update(T entity, int id) {
+		return jdbcTemplate.update(sqlStringHelper.createUpdate(entity, id));
+	}
+
+	public List<Map<String, Object>> select(T entity) {
+		return jdbcTemplate.queryForList(sqlStringHelper.createSelect(entity));
+		// return
+		// jdbcTemplate.queryForRowSet(sqlStringHelper.createSelect(entity));
+	}
+
+	/**
+	 * 
+	 * @param entity
+	 *            只带id的实体，根据id返回实体持久化数据
+	 * @return
+	 */
+	// public Object getEntity(T entity) {
+	// return jdbcTemplate.queryForObject(
+	// sqlStringHelper.createSelect(entity), entity.getClass());
+	// }
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	@Autowired
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	public SQLStringHelper<T> getSqlStringHelper() {
+		return sqlStringHelper;
+	}
+
+	@Resource
+	public void setSqlStringHelper(SQLStringHelper<T> sqlStringHelper) {
+		this.sqlStringHelper = sqlStringHelper;
+	}
+
+}

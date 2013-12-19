@@ -1,0 +1,114 @@
+package tan.code.dao;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import tan.code.utils.SQLStringHelper;
+
+/**
+ * 通用数据库操作类
+ * 
+ * @author Mr_Tank_
+ * 
+ */
+
+public class BaseDao<T> {
+	private Class<T> entityClass;
+	private JdbcTemplate jdbcTemplate;
+	private SQLStringHelper<T> sqlStringHelper;
+	
+	//通过反射获取子类确定泛型
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public BaseDao(){
+		Type type=getClass().getGenericSuperclass();
+		Type[] params=((ParameterizedType)type).getActualTypeArguments();
+		entityClass=(Class)params[0];
+	}
+
+	/**
+	 * 添加
+	 * 
+	 * @param entity
+	 */
+	public void add(T entity) {
+		jdbcTemplate.execute(sqlStringHelper.createInsert(entity));
+	}
+
+	/**
+	 * 根据id删除
+	 * 
+	 * @param class1类
+	 * @param id
+	 *            实体id
+	 * 
+	 * @return
+	 */
+	public int delete(int id) {
+		return jdbcTemplate.update(sqlStringHelper.createDelete(entityClass, id));
+	}
+
+	/**
+	 * 根据id 更新实体
+	 * 
+	 * @param entity
+	 * @param id
+	 * @return
+	 */
+	public int update(T entity, int id) {
+		return jdbcTemplate.update(sqlStringHelper.createUpdate(entity, id));
+	}
+
+	public List<Map<String, Object>> select(T entity) {
+		return jdbcTemplate.queryForList(sqlStringHelper.createSelect(entity));
+	}
+
+	/**
+	 * 获取总数
+	 * @param entity
+	 * @return 总记录
+	 */
+	public int getTotal() {
+		String sql="select count(*) from t_"+entityClass.getSimpleName().toLowerCase();
+		return jdbcTemplate.queryForInt(sql);
+	}
+	// /**
+	// *
+	// * @param entity 只带id的实体，根据id返回实体持久化数据
+	// *
+	// *
+	// * @return
+	// */
+	// public T getEntity(int id) {
+	// //System.out.println(jdbcTemplate.queryForObject(sqlStringHelper.createSelectByEntityId(entityClass, id),
+	// entityClass));
+	//
+	// //System.out.println(jdbcTemplate.queryForRowSet(sqlStringHelper.createSelectByEntityId(entityClass, id)));
+	//
+	// return (T) jdbcTemplate.queryForObject(sqlStringHelper.createSelectByEntityId(entityClass, id), entityClass);
+	// }
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	@Autowired
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	public SQLStringHelper<T> getSqlStringHelper() {
+		return sqlStringHelper;
+	}
+
+	@Resource
+	public void setSqlStringHelper(SQLStringHelper<T> sqlStringHelper) {
+		this.sqlStringHelper = sqlStringHelper;
+	}
+
+}

@@ -1,0 +1,58 @@
+package tan.code.controller;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import tan.code.model.User;
+import tan.code.service.UserService;
+
+@Controller
+@RequestMapping("/user.do")
+public class UserController {
+	private UserService userService;
+
+	@RequestMapping(params = "method=add")
+	public String add(User user) {
+		user.setIdentity(1); // 用戶身份，1表示教員，2表示家長；注册的时候再设置
+		userService.add(user);
+		return "success.jsp";
+	}
+
+	@RequestMapping(params = "method=delete")
+	public String delete(int id) {
+		userService.delete(id);
+		return "success.jsp";
+	}
+
+	@RequestMapping(params = "method=update")
+	public String update(User user, int id) {
+		userService.update(user, id);
+		return "success";
+	}
+
+	@RequestMapping(params = "method=list_users")
+	public String list_users() {
+
+		return "success";
+	}
+	@RequestMapping(params = "method=getuser")
+	public String getuser() {
+		User user=new User();
+		user.setId(8);
+		
+		//System.out.println(userService.getuser(user));
+		return "success";
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Resource
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+}

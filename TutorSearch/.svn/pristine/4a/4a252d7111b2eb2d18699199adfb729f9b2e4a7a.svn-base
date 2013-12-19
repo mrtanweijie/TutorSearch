@@ -1,0 +1,145 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>My JSP 'add_user.jsp' starting page</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+	<script type="text/javascript" src="./js/jquery-2.0.3.js"></script>
+	<script type="text/javascript" src="./js/jquery.validate.js" charset="gb2312"></script>
+	<script type="text/javascript" src="./js/jquery.validate.messages_cn.js"></script>
+<script type="text/javascript">
+	$(function() {
+	$("#name").bind({
+			focus : function() {
+				//$("#s_name").show().html("名字请使用数字，中文，字母，下划线组成");
+			},
+			change : function() {
+			var name=$("#name").val();
+				//$("#s_name").show().html("change事件");
+				$.ajax({
+				url:"user/check",
+				type:"post",
+				data:{name:name},
+				success:function(str){
+				if(str=="success"){
+				$("#s_name").show().html("该名字可以注册");
+				}
+				else{
+				$("#s_name").show().html("该用户已经存在");
+				}
+				}
+				});
+			}
+		});
+		$("#register").validate({
+			rules : {
+				name : {
+					required : true,
+					minlength : 2,
+					maxlength : 5
+				},
+				email : {
+					required : true,
+					email : true
+				},
+				password : {
+					required : true,
+					minlength : 6
+				},
+				s_password : {
+					required : true,
+					equalTo : "#password"
+				},
+			},
+			messages : {
+				name : {
+					required : "请填写姓名",
+					minlength : "姓名长度不能小于2个字符",
+					maxlength : "姓名长度不能大于5个字符"
+				},
+				email : {
+					required : "请填写邮箱",
+					email : "邮箱格式不正确"
+				},
+				password : {
+					required : "请填写密码",
+					minlength : "密码长度不能小于6个字符"
+				},
+				s_password : {
+					required : "请再次填写密码",
+					equalTo : "密码不一致"
+				}
+			}
+		});
+	});
+	//这个会使验证失效，后面改为直接表单提交
+	$(function() {
+		$("#bt_register").click(function() {
+
+			var name = $("#name").val();
+			var email = $("#email").val();
+			var password = $("#password").val();
+
+			$.ajax({
+				url : "user/create",
+				type : "post",
+				data : {
+					name : name,
+					email : email,
+					password : password
+				},
+				success : function(r_str) {
+					//注册成功则跳转到登录页面
+					if (r_str == "success") {
+						window.location.href = "user/login.jsp";
+					} else {
+						$("#tip").html("注册失败");
+					}
+				}
+			});
+		}
+
+		);
+	});
+</script>
+</head>
+  
+  <body>
+	<!--后期改为直接提交，不使用AJAX  -->
+	<!--<form id="register" method="POST" action="<%=request.getContextPath()%>/user/create"> -->
+	<form id="register" method="POST">
+		<div id="tip"></div>
+		<div>
+			name:<input type="text" name="name" id="name"><span
+				id="s_name"></span>
+		</div>
+		<div>
+			email:<input type="text" name="email" id="email"><span></span>
+		</div>
+		<div>
+			pwd:<input type="password" name="password" id="password"><span></span>
+		</div>
+		<div>
+			s_pwd:<input type="password" name="s_password" id="s_password"><span></span>
+		</div>
+		<div>
+			<input id="bt_register" type="submit" value="OK">
+		</div>
+	</form>
+</body>
+</html>

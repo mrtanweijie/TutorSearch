@@ -1,0 +1,663 @@
+<%@ page contentType="text/html; charset=utf-8" language="java"
+	import="java.sql.*" errorPage=""%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="./css/tour.css" />
+<title>首页</title>
+<style type="text/css">
+a:link {
+	text-decoration: none;
+	color: #000000;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #FF6600;
+}
+
+a:active {
+	text-decoration: none;
+}
+</style>
+<script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+<script type="text/javascript" src="js/jquery.DatePicker.min.js"
+	charset="utf-8"></script>
+<!-- 代码高亮 -->
+<script type="text/javascript" src="js/ds.in.js"></script>
+<script type="text/javascript" src="js/ds.lighter.js"></script>
+<script type="text/javascript" src="js/51_min.js"></script>
+<script type="text/javascript" src="js/province_city.js" charset="gbk"></script>
+<script language=javascript>
+	var s = [ "province", "city" ];
+	var opt0 = [ "请选择", "请选择" ];
+	function setup() {
+		for (i = 0; i < s.length - 1; i++)
+			document.getElementById(s[i]).onchange = new Function("change("
+					+ (i + 1) + ")");
+		change(0);
+	}
+//##联动菜单结束-->
+</script>
+<script type="text/javascript">
+
+//根據城市 返回数据
+function getdatabycity(city){
+				$.ajax({
+								url : "tutor/s_city2",
+								type : "get",
+								data : {
+									city : city
+								},
+								success : function(r_str) {
+									if (r_str == "nodate") {
+										$("#t_data").show().html("无数据");
+									} else {
+									$("#t_data").empty();
+									//alert("hello");
+										var j = eval(r_str);
+										$(j).each(function() {
+											$("#t_data").append("<div style=\"height:25px; float:left;\">"+
+											"<div style=\"float:left;width:90px;\"><a href=\"\/TutorSearch\/tutor\/"+this.id+"\">"+this.date+"</a></div>"+
+											"<div style=\"float:left;width:170px\"><a href=\"\/TutorSearch\/tutor\/"+this.id+"\">"+this.title+"</a></div>"+
+											"<div style=\"float:left;width:70px\">"+this.region+"</div>"											
+											+"</div>");	
+										});
+									}
+								}
+							});
+			}
+			
+
+	$(document).ready(
+			function() {
+				jQuery.jqtab = function(tabtit, tab_conbox, shijian) {
+					$(tab_conbox).find("li").hide();
+					$(tabtit).find("li:first").addClass("thistab").show();
+					$(tab_conbox).find("li:first").show().bind(
+							$.ajax({
+								url : "tutor/s_city2",
+								type : "get",
+								data : {
+									city : "南宁"
+								},
+								success : function(r_str) {
+									if (r_str == "nodate") {
+										$("#t_data_nanning").append("<div style=\"height:25px; float:left;\">"+
+											"<div style=\"float:left;width:90px;\">无数据</div></div>");
+									} else {
+										var j = eval(r_str);
+										$(j).each(function() {
+											$("#t_data_nanning").append("<div style=\"height:25px; float:left;\">"+
+											"<div style=\"float:left;width:90px;\"><a href=\"\/TutorSearch\/tutor\/"+this.id+"\">"+this.date+"</a></div>"+
+											"<div style=\"float:left;width:170px\"><a href=\"\/TutorSearch\/tutor\/"+this.id+"\">"+this.title+"</a></div>"+
+											"<div style=\"float:left;width:70px\">"+this.region+"</div>"											
+											+"</div>");
+											
+										});
+									}
+								}
+							}));
+
+					$(tabtit).find("li").bind(
+							shijian,
+							function() {
+								$(this).addClass("thistab").siblings("li")
+										.removeClass("thistab");
+								var activeindex = $(tabtit).find("li").index(
+										this);
+								$(tab_conbox).children().eq(activeindex).show()
+										.siblings().hide();
+								return false;
+							});
+
+				};
+				/*调用方法如下：*/
+				$.jqtab("#tabs", "#tab_conbox", "click");
+
+				//$.jqtab("#tabs2", "#tab_conbox2", "mouseenter");
+
+			});
+
+			$(function(){
+			$("#guilin").click(function(){
+			getdatabycity("桂林市");
+			});
+			});
+			
+			$(function(){
+			$("#liuzhou").click(function(){
+			$.ajax({
+								url : "tutor/s_city2",
+								type : "get",
+								data : {
+									city : "柳州市"
+								},
+								success : function(r_str) {
+									if (r_str == "nodate") {
+										$("#t_data_liuzhou").show().html("无数据");
+									} else {
+									$("#t_data_liuzhou").empty();
+									//alert("hello");
+										var j = eval(r_str);
+										$(j).each(function() {
+											$("#t_data_liuzhou").append("<div style=\"height:25px; float:left;\">"+
+											"<div style=\"float:left;width:90px;\"><a href=\"\/TutorSearch\/tutor\/"+this.id+"\">"+this.date+"</a></div>"+
+											"<div style=\"float:left;width:170px\"><a href=\"\/TutorSearch\/tutor\/"+this.id+"\">"+this.title+"</a></div>"+
+											"<div style=\"float:left;width:70px\">"+this.region+"</div>"											
+											+"</div>");	
+										});
+									}
+								}
+							});
+			});
+			});
+			
+			$(function(){
+			$("#baise").click(function(){
+			getdatabycity("百色");
+			});
+			});
+</script>
+<script>
+<!--
+	function setTab(name, cursel, n) {
+		for (i = 1; i <= n; i++) {
+			var menu = document.getElementById(name + i);
+			var con = document.getElementById("con_" + name + "_" + i);
+			menu.className = i == cursel ? "hover" : "";
+			con.style.display = i == cursel ? "block" : "none";
+		}
+	}
+//-->
+</script>
+<script type="text/javascript">
+	$(function(){ $("#searchText").bind({focus: function(){
+												   //alert("focus");
+												   $("#searchText").attr("value","");
+												   },
+												   change: function(){
+												   // alert("change");
+													  // $("#bindtip").show().html("change事件");
+													   }
+									});
+	});
+	
+		$(function(){ $("#searchText").bind({focus: function(){
+												   //alert("focus");
+												   $("#searchText").attr("value","");
+												   },
+												   change: function(){
+												   // alert("change");
+													  // $("#bindtip").show().html("change事件");
+													   }
+									});
+	});
+		$(function(){ $("#begin").bind({focus: function(){
+												   //alert("focus");
+												   $("#begin").attr("value","");
+												   },
+												   change: function(){
+												   // alert("change");
+													  // $("#bindtip").show().html("change事件");
+													   }
+									});
+	});
+		$(function(){ $("#end").bind({focus: function(){
+												   //alert("focus");
+												   $("#end").attr("value","");
+												   },
+												   change: function(){
+												   // alert("change");
+													  // $("#bindtip").show().html("change事件");
+													   }
+									});
+	});
+	
+	
+	$(function(){
+		$("#searchText").validate({
+			rules : {
+				searchText : {
+					required : true
+				}
+			},
+			messages : {
+				searchText : {
+					required : "请出入搜索关键字"
+				}
+			}
+		});
+	});
+	
+	//加载相关搜索
+	$(document).ready(function(){
+	
+	});
+
+</script>
+</head>
+<body>
+	<div class="allbody">
+		<div class="header">
+			<ul>
+				<li><a href="user/login.jsp">登陆</a></li>
+				<li>|</li>
+				<li><a href="user/add_user.jsp">注册</a></li>
+				<li>|</li>
+				<li><a href="#">帮助</a></li>
+				<li>|</li>
+				<li><a href="#">收藏本站</a></li>
+			</ul>
+		</div>
+		<!--导航 -->
+		<div class="content">
+			<!--logo-->
+			<div style="float:left; width:230px; margin-top:25px; margin-left:140px;">
+<img src="images/logo2.png" width="179" height="70" alt="logo" />
+</div>
+			<div class="nav">
+				<ul>
+					<li><a href="#">首页</a></li>
+					<li><a href="#">家教</a></li>
+					<li><a href="tutor/add_tutor.jsp">家教发布</a></li>
+					<li><a href="#">高级搜索</a></li>
+					<li><a href="#">兼职</a></li>
+					<li><a href="#">讨论区</a></li>
+					<li><a href="#">分享区</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--头部搜索框 -->
+		<div class="banner">
+			<div class="ban">
+				<div id="lib_Tab1_sx" class="lib_tabborder_sx">
+					<div class="lib_Menubox_sx ">
+						<ul>
+							<li id="one1" onclick="setTab('one',1,5)" class="hover">搜家教</li>
+							<li id="one2" onclick="setTab('one',2,5)">搜兼职</li>
+
+						</ul>
+					</div>
+					<div class="lib_Contentbox_sx ">
+						<!--家教-->
+						<div id="con_one_1">
+							<h2 style="margin:-3px 50px">家教搜索</h2>
+							<div class="frist">
+								<div>
+									<form id="search" method="get"
+										action="<%=request.getContextPath()%>/tutor/search">
+										家教：<input type="text" id="searchText" name="searchText"
+											value="关键字"
+											style=" width:176px; height:25px;margin:10px 0px 0px 6px" />
+										<input id="bt_search" type="submit" value="搜索"
+											style="height:25px;" />
+									</form>
+								</div>
+								<div class="select">
+									<form id="s_date" method="get"
+										action="<%=request.getContextPath()%>/tutor/s_date">
+										地区： <select id="province" name="province"
+											style=" width:180px; height:30px;margin:14px 0px"><option></option>
+										</select> <select id="city" name="city"
+											style=" width:180px; height:30px;margin:14px 0px"><option></option>
+										</select>
+										<script language="javascript">
+											setup();
+										</script>
+										<div class="select">
+											时间：<input id="begin" name="begin" value="选择开始时间"
+												class="SerachTxBd" type="text"
+												style="width:176px; height:25px;margin:0px 0px 0px 6px">
+												<script type="text/javascript">
+													;
+													(function(global, document,
+															$, undefined) {
+														$('#begin')
+																.datePicker(
+																		{
+																			followOffset : [
+																					0,
+																					24 ]
+																		});
+														window.p1 = $('#begin')
+																.data(
+																		'DatePicker');
+													})(this, document, jQuery);
+												</script> <input id="end" name="end" class="SerachTxBd"
+												value="选择结束时间" type="text" style="width:176px; height:25px;">
+													<script type="text/javascript">
+													;
+													(function(global, document,
+															$, undefined) {
+														$('#end')
+																.datePicker(
+																		{
+																			followOffset : [
+																					0,
+																					24 ]
+																		});
+														window.p1 = $('#end')
+																.data(
+																		'DatePicker');
+													})(this, document, jQuery);
+												</script> <input input id="bt_search_date" type="submit" value="搜索"
+													style="height:25px;margin:0px 0px" />
+										</div>
+									</form>
+
+								</div>
+
+							</div>
+							<div class="li">
+								<h4 style="margin:5px 50px">
+									输入您的关键字或者选择地区时间<br>获取最新周边家教信息 
+								</h4>
+							</div>
+
+						</div>
+
+						<!--兼职-->
+						<div id="con_one_2" style="display:none">
+							<h2 style="margin:-3px 50px">兼职搜索</h2>
+							<div class="frist">
+								<div class="select">
+									兼职：<input class="SerachTxBd" value="兼职关键字，如：周末兼职" type="text"
+										style=" width:176px; height:25px;margin:10px 0px 0px 6px">
+										<input name="bt_search" type="button" value="搜索"
+										style="height:25px;margin:0px 0px" />
+								</div>
+							</div>
+							<div class="li">
+								<h4 style="margin:-5px 50px">
+									输入兼职关键字<br>获取最新最全面的兼职信息 
+								</h4>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!--搜索框右侧图片-->
+				<div class="tu"
+					style="background:#000; width:300px; height:250px; float:right; margin:-281px 10px">
+					<a href="#"><img src="./images/ban.jpg" width="300"
+						height="250" /> </a>
+				</div>
+
+				<!--搜索框结束-->
+
+				<!--首页内容-->
+				<div style="width:1000px; height:900px;">
+					<!--左侧-->
+					<div id="main_left" style="float:left; width:680px; height:100%">
+						<!--首页家教-->
+						<div id="tabbox">
+							<h3 style=" margin:15px 0px 0px 20px ">
+								热门地区<span
+									style=" font-size:10px; margin-left:10px; margin-top:10px; font:">最新家教</span>
+							</h3>
+							<ul class="tabs" id="tabs">
+								<li><a id="nanning" href="#">南宁</a></li>
+								<li><a id="guilin" href="#">桂林</a></li>
+								<li><a id="liuzhou" href="#">柳州</a></li>
+								<li><a id="baise" href="#">百色</a></li>
+								<li><a id="qinzhou" href="#">钦州</a></li>
+							</ul>
+							<ul class="tab_conbox" id="tab_conbox">
+								<li class="tab_con">
+									<!--固定城市家教信息-->
+									<div style="width:700px; height:25px;">
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+									</div>
+
+									<div id="t_data_nanning" style="width:700px; height:230px; ">
+									</div></li>
+								<li class="tab_con">
+									<!--桂林-->
+									<div style="width:700px; height:25px;">
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+									</div>
+
+									<div id="t_data" style="width:700px; height:230px; "></div>
+								</li>
+								<li class="tab_con">
+									<!--柳州-->
+									<div style="width:700px; height:25px;">
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+									</div>
+
+									<div id="t_data_liuzhou" style="width:700px; height:230px; ">
+									</div>
+								</li>
+								<li class="tab_con">
+									<!--百色-->
+									<div style="width:700px; height:25px;">
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+									</div>
+
+									<div id="t_data" style="width:700px; height:230px; "></div>
+								</li>
+								<li class="tab_con">
+									<!--钦州-->
+									<div style="width:700px; height:25px;">
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+										<div style="height:25px; float:left; ">
+											<div style="float:left;width:80px;">时间</div>
+											<div style="float:left;width:180px">标题</div>
+											<div style="float:left;width:70px">地区</div>
+										</div>
+									</div>
+
+									<div id="t_data" style="width:700px; height:230px; "></div>
+								</li>
+							</ul>
+						</div>
+
+						<!--可在下面继续添加模块-->
+						<!--兼职-->
+						<div
+							style="width:680px; height:300px;margin-left:0px; margin-top:10px;">
+							<!--兼职导航-->
+							<div
+								style="width:100%; height:40px; border-bottom:thin  #999 solid;">
+								<div
+									style=" float:left;margin-top:15px; margin-left:20px; font-size:15px; font-weight:bold">
+									<span>周边兼职</span><span style="margin-left:10px; font-size:10px">周末兼职</span>
+									<span style=" margin-left:420px; font-weight:normal">more>></span>
+								</div>
+							</div>
+							<!--兼职内容-->
+							<div style="width:680px; height:260px;">
+								<div
+									style="float:left; width:350px; height:100%;margin-top:10px;">
+									<img src="./images/banner.jpg" style="width:350px; height:90%" />
+								</div>
+								<!--特别推荐内容-->
+								<div
+									style="float:left; width:320px ;margin-top:10px; margin-left:10px">
+									<div
+										style="float:left; margin-left:10px; font-size:15px; font-weight:bold">特别推荐</div>
+
+									<div style="float:left; width:100%; margin-left:10px;">
+										<ul>
+											<li style="margin-top:5px;font-size:14px"><a href="#">桂林香格里拉大酒店</a>
+											</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+										<ul>
+											<li style="margin-top:5px;font-size:14px">桂林香格里拉大酒店</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!--高校信息-->
+						<div
+							style="width:100%; height:300px;margin-left:0px; margin-top:10px; background:#39F">
+							<!--招聘导航-->
+							<div
+								style="width:100%; height:40px; border-bottom:thin #999 solid; background:#FFF">
+								<div
+									style=" float:left;margin-top:15px; margin-left:20px; font-size:15px; font-weight:bold">
+									<span>高校家教</span><span style="margin-left:10px; font-size:10px">一览无余</span>
+									<span style=" margin-left:420px; font-weight:normal">more>></span>
+								</div>
+							</div>
+
+							<!--招聘内容-->
+							<div style="width:100%; height:260px; background:#FFF"></div>
+
+						</div>
+					</div>
+					<!-- 右侧 -->
+					<div id="main_right" style="float:left; width:310px; height:100%;">
+						<!--大家都在搜索-->
+						<div
+							style="width:95%; height:300px; margin:0px 10px;border:thin  #CCC solid;">
+							<div
+								style="float:left; width:100%;margin-top:15px; border-bottom:thin  #CCC solid;">
+								<div
+									style=" float:left;margin-left:10px; margin-bottom:10px; font-size:15px; font-weight:bold;">
+									<span>大家都在搜索</span>
+								</div>
+							</div>
+						</div>
+
+						<div
+							style="width:95%; height:300px; margin:10px 10px;border:thin  #CCC solid;">
+							<div
+								style="float:left; width:100%;margin-top:15px; border-bottom:thin  #CCC solid;">
+								<div
+									style=" float:left;margin-left:10px; margin-bottom:10px; font-size:15px; font-weight:bold;">
+									<span>热门信息</span>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					<!-- 页脚 -->
+<div style="float:left;border-top:#4F9FDF 2px solid;margin-top:40px; width:100%; height:200px">
+  <center>
+  <div style="margin-top:30px">版权所有&copy;广西师范大学计信学院</div>
+  </center>
+  </div>
+					<!--首页内容结束-->
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--页脚-->
+	<!-- <div
+		style="width:100%; height:150px;border-top:thin #999 solid;font-size:14px; color:#999;">
+		<center style="margin-top:20px">
+			<div>
+				京ICP证1234567 <span>广西师范大学计算机科学与信息工程学院</span>
+			</div>
+		</center>
+		<center style="margin-top:30px">
+			<span>版权所有 &copy;2010计本二班 Mr_Tank_ 2013年10月14日</span>
+		</center>
+	</div> -->
+	<!--页脚结束-->
+	
+	
+</body>
+</html>

@@ -1,0 +1,42 @@
+package tan.code.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.lucene.document.Document;
+import org.springframework.stereotype.Component;
+import tan.code.model.Tutor;
+import tan.code.utils.LuceneHelper;
+
+@Component
+public class TutorDao {
+
+	private LuceneHelper<Tutor> luceneHelper = new LuceneHelper<Tutor>();
+
+	// 保存-添加索引
+	public void add(String indexWriterPath, Tutor tutor) {
+		luceneHelper.add(indexWriterPath, tutor);
+	}
+
+	// 根據科目查找
+	public List<Tutor> search(String indexReadPath, String searchText) {
+		
+		List<Tutor> tutors = new ArrayList<Tutor>();
+		
+		Tutor tutor;
+		String fields[] = { "title", "subject", "content","province","city","region","date","others"};
+		List<Document> documents = luceneHelper.simpleSearch(indexReadPath,
+				fields, searchText);
+		
+		for (Document document : documents) {
+			tutor = new Tutor();
+			tutor.setId(Integer.valueOf(document.get("id")));
+			tutor.setTitle(document.get("title"));
+			tutor.setGrade(document.get("grade"));
+			tutor.setSubject(document.get("subject"));
+			tutors.add(tutor);
+		}
+		return tutors;
+	}
+
+}

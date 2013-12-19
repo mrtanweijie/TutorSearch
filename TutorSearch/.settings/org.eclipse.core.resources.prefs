@@ -1,0 +1,16 @@
+#Tue Dec 10 10:12:36 CST 2013
+eclipse.preferences.version=1
+encoding//WebRoot/WEB-INF/ftl/myinfo.ftl=UTF-8
+encoding//WebRoot/WEB-INF/ftl/nodata.ftl=UTF-8
+encoding//WebRoot/WEB-INF/ftl/tutor_data.ftl=UTF-8
+encoding//WebRoot/WEB-INF/ftl/tutorslist.ftl=UTF-8
+encoding//WebRoot/WEB-INF/ftl/userslist.ftl=UTF-8
+encoding//WebRoot/admin/index.jsp=UTF-8
+encoding//WebRoot/admin/mainframe.jsp=UTF-8
+encoding//WebRoot/admin/myinfo.jsp=UTF-8
+encoding//WebRoot/success.jsp=UTF-8
+encoding//WebRoot/tutor/addtutor1.jsp=UTF-8
+encoding//WebRoot/tutor/tutors_list-1.jsp=UTF-8
+encoding//WebRoot/user/false.jsp=UTF-8
+encoding//WebRoot/user/login-1.jsp=UTF-8
+encoding//WebRoot/user/user_list.jsp=UTF-8

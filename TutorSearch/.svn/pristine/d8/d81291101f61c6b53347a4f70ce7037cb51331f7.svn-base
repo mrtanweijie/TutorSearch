@@ -1,0 +1,111 @@
+package tan.code.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.WebUtils;
+
+import tan.code.model.LoginInfo;
+import tan.code.model.User;
+import tan.code.service.UserService;
+import org.apache.log4j.Logger;
+
+@Controller
+@RequestMapping("/user")
+public class UserController {
+	private static Logger logger =Logger.getLogger(UserController.class);
+	private UserService userService;
+	private List<User> users;
+
+	@RequestMapping(value = "/check", method = RequestMethod.POST)
+	public void check(String name, HttpServletResponse response) throws Exception {
+		PrintWriter printWriter = response.getWriter();
+		if (userService.checkName(name)) {
+			printWriter.print("success");
+		}
+		else {
+			printWriter.print("error");
+		}
+	}
+	
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public void create(User user,HttpServletResponse response) throws Exception {
+		user.setIdentity(1); // 用戶身份，1表示教員，2表示家長；注册的时候再设置
+		PrintWriter printWriter = response.getWriter();
+		if(userService.add(user)){
+			printWriter.print("success");
+		}
+		else {
+			printWriter.print("error");
+		}
+	}
+
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	public String delete(@PathVariable("id") String id) {
+		userService.delete(Integer.valueOf(id));
+		return "/success.jsp";
+	}
+
+	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	public String update(User user) {
+		userService.update(user, user.getId());
+		return "/success.jsp";
+	}
+	
+	@RequestMapping(value ="/show/{id}",method = RequestMethod.GET)
+	public String show(@PathVariable("id") String id) {
+		User user = new User();
+		user = userService.getuser(Integer.valueOf(id));
+		System.out.println(user.getName());
+		return "/success.jsp";
+	}
+
+	@RequestMapping(value="/show/{fromid}/{told}",method = RequestMethod.GET)
+	public String getuserlist(@PathVariable("fromid")String fromid,@PathVariable("told")String told, ModelMap map) {
+		users = userService.getuserlist(Integer.valueOf(fromid), Integer.valueOf(told));
+		map.put("users", users);
+		return "userslist.ftl";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public void login(LoginInfo loginInfo,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("login");
+		System.out.println(loginInfo.getName()+loginInfo.getPassword()+loginInfo.getCheck());
+		//String userip=GetUserIp.getIpAddr(request);
+		
+		boolean flag=userService.checkUser(loginInfo.getName(),loginInfo.getPassword());
+		PrintWriter printWriter=response.getWriter();
+		if (flag) {
+			//将用户名写入session
+			WebUtils.setSessionAttribute(request, "name", loginInfo.getName());
+			//记录登录日志
+			logger.info("用户登录:"+loginInfo.getName());
+			printWriter.print("success");
+		}
+		else {
+			printWriter.print("false");
+		}
+		
+		printWriter.close();
+		
+	}
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Resource
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+}

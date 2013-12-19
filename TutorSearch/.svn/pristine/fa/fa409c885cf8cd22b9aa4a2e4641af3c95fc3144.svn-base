@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* CSS Document */
+.allbody{padding:0;font:12px "宋体"; }
+.ul ,li ,a{list-style:none; float:left; text-decoration:none; text-align:center;} 
+.header{ float:right; margin-right:200px;}
+.header ul li{ margin-left:10px;}
+.header ul li a{ font-size:14px; height:10px; color:#999;}
+.header ul li a:hover{ text-decoration:underline; color:#F60;}
+.content{ height:90px;width:1300px}
+.nav {  background:#FFF; width:825px; height:45px; float:left; margin-top:20px; border-bottom: #4f9fdf solid 2px;}
+.nav ul li{  background:#f7f7f7;width:111px; height:43px;margin-left:1.5px;color:#FFF;text-align:center; line-height:43px;
+margin-top:-10px;}
+.nav ul li a{ font-size:20px; color:#999; font-weight:bold;width:111px;  line-height:43px;text-align:center;}
+.nav ul li:hover{ background:#4f9fdf;}
+.nav ul li a:hover{ color:#FFF;}
+
+.banner{ background:url(../images/banner-1_02.jpg); border-top:#4f9fdf solid 2px; margin-top:-3px; width:1349px; height:290px; position:absolute; z-index:1px;}
+.ban{ background:#FFF; width:988px; height:284px; margin-left:160px; margin-top:4px;}
+
+#lib_Tab1_sx{width:660px; height:280px;margin:0px;padding:0px;margin-bottom:15px; overflow:hidden;}
+.lib_tabborder_sx{border:1px solid #fff;}
+.lib_Menubox_sx {line-height:56px;position:relative; float:left; width:130px; height:280px;/*border-right:1px solid #95C9E1;*/}
+.lib_Menubox_sx ul{margin:0px;padding:0px;list-style:none; position:absolute;/* top:15px; left:5px;*/ height:55px;text-align:center;}
+.lib_Menubox_sx li{display:block;cursor:pointer;width:114px;color:#000;font-weight:bold; /*margin-bottom:5px;*/height:56px;line-height:55px; background-color:#f7f7f7; font-size:18px;}
+.lib_Menubox_sx li.hover{padding:0px;background:#fff;width:116px;border:1px solid #f7f7f7; border-right:0; border-left:0;
+color:#4f9fdf;height:55px;line-height:55px;}
+.lib_Contentbox_sx{margin-top:20px; border-top:none;/*padding:20px;*/ border-left:0; margin-left:130px;}
+.frist{ width:520px; height:164px; border-top:1px solid #ccc; border-bottom:1px solid #CCC;margin:21px 10px;}
+.SearchBdRadio { height:35px; padding:10px 0 0 39px;}
+.SearchBdRadio span { height:20px; line-height:20px; _line-height:22px; cursor:pointer; margin-right:15px; padding-left:20px; float:left; background-position:-165px  -93px; overflow:hidden;}
+.SearchBdRadio .Selected { background-position:-165px -69px;}
+.anter{background:#eb7a17;width:90px;height:31px; margin:-20px 370px;text-align:center; list-style:none; font-size:18px; line-height:30px; font-weight:bold;}
+.anter a{ width:90px;height:31px;text-decoration:none; color:#FFF;text-align:center;}
+.anter a:hover{ color:#000;}
+
+.main{ width:680px; margin-left:157px;margin-top:-938px;}
+.mainleft{ width:680px; height:146px;}
+
+
+jssbody,ul,li{padding: 0;font: 12px normal "宋体", Arial, Helvetica, sans-serif;list-style: none;}
+a{text-decoration: none;color: #000;font-size: 14px;}
+
+/*h3{ width:150px;}*/
+#tabbox{ width:100%; height:300px; overflow:hidden; margin-left:0px;}
+.tab_conbox{ width:680px;border:none;border-top:  1px solid #999; margin-top:-13px; }
+.tab_con{ display:none;}
+.tabs{height: 32px;border:none;width: 100%;margin-left:300px; margin-top:-20px;}
+.tabs li{ height:30px;line-height:31px;border:none; margin:1px 3px;background:fff;overflow: hidden; float:left; display:inline;}
+.tabs li a {display: block;padding: 0 20px;border:none;outline: none;}
+
+.tabs li a:hover { font-weight:bold;}
+.tabs .thistab,.tabs .thistab a:hover{background: #fff;font-weight:bolder;}
+.tab_con {padding:12px;font-size: 14px; line-height:175%;}
+.tab_conbox li{ margin-left:10px;}
+
+.mainlefta{ width:680px;height:295px;}
+.mainleftat{width:680px;height:40px; }
+.mainleftat li{ margin:0px 137px; font-size:15px;}
+.mainleftaf{width:680px;height:240px; border-top:#999 1px solid; margin:0px; }
+.c{ width:100px;height:74px; border-bottom:  1px solid #999; float:left;}
+.b{ margin-top:4px; width:100px;height:34px; border-bottom:  1px solid #999; float:right;}
+.mainleftb{width:680px;height:340px;}
+.e{ margin:13px -5px;width:680px;height:290px; border-top:1px solid #999;}
+
+.mainright{ background:#333;width:270px;float:right; margin:-1342px 183px 0px 0px;  }
+

@@ -1,0 +1,47 @@
+package tan.code.utils;
+
+import javax.annotation.Resource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
+
+public class SendEmail {
+	
+	private JavaMailSender javaMailSender;
+	
+	//public ApplicationContext ctx = null;
+
+
+
+	public SendEmail() {
+		// 获取上下文
+		//ctx = new ClassPathXmlApplicationContext("/WEB-INF/applicationContext.xml");
+	}
+
+	public JavaMailSender getJavaMailSender() {
+		return javaMailSender;
+	}
+
+
+	public void setJavaMailSender(JavaMailSender javaMailSender) {
+		this.javaMailSender = javaMailSender;
+	}
+
+	public void send() {
+		// 获取JavaMailSender bean
+		//JavaMailSender sender = (JavaMailSender) ctx.getBean("javaMailSender");
+		
+		SimpleMailMessage mail = new SimpleMailMessage(); // <span
+															// style="color: #ff0000;">注意SimpleMailMessage只能用来发送text格式的邮件</span>
+
+		try {
+			mail.setTo("474481263@qq.com");// 接受者
+			mail.setFrom("1277221202@qq.com");// 发送者,这里还可以另起Email别名，不用和xml里的username一致
+			mail.setSubject("spring mail test!");// 主题
+			mail.setText("springMail的简单发送测试");// 邮件内容
+			javaMailSender.send(mail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

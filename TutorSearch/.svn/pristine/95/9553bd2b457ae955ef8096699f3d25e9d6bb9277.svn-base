@@ -1,0 +1,8 @@
+package tan.code.dao;
+
+import org.springframework.stereotype.Component;
+
+import tan.code.model.User;
+@Component
+public class UserDao extends BaseDao<User> {
+}

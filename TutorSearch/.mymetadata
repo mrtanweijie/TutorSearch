@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="TutorSearch"
+  id="myeclipse.1380256507109"
+  context-root="/TutorSearch"
+  j2ee-spec="6.0"
+  archive="TutorSearch.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

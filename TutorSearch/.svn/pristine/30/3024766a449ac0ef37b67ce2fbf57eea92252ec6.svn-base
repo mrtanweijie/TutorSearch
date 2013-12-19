@@ -1,0 +1,25 @@
+package tan.code.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import tan.code.dao.BaseDao;
+import tan.code.model.Tutor;
+import tan.code.utils.SQLStringHelper;
+
+public class MyTest {
+
+	@Test
+	public void test() {
+		// fail("Not yet implemented");
+		// Tutor tutor=new Tutor();
+
+		SQLStringHelper<Tutor> sqlStringHelper = new SQLStringHelper<Tutor>();
+		System.out.println(sqlStringHelper.createSelectByEntityId(Tutor.class, 2));
+
+		// BaseDao<Tutor> baseDao =new BaseDao<Tutor>();
+		// baseDao.getEntity(1);
+	}
+
+}

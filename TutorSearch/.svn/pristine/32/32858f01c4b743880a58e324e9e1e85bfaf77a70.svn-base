@@ -1,0 +1,94 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/tour.css" />
+<script type="text/javascript" src="../js/jquery-2.0.3.js"></script>
+<script type="text/javascript">     
+function countDown(secs,surl){     
+ var jumpTo = document.getElementById('jumpTo');
+ jumpTo.innerHTML=secs;  
+ if(--secs>0){     
+     setTimeout("countDown("+secs+",'"+surl+"')",3000);     
+     }     
+ else{       
+     location.href=surl;     
+     }     
+ }     
+</script> 
+
+<title>操作成功</title>
+</head>
+<body>
+	<div class="allbody">
+		<div class="header">
+			<ul>
+				<li><a href="#">登陆</a></li>
+				<li>|</li>
+				<li><a href="#">注册</a></li>
+				<li>|</li>
+				<li><a href="#">帮助</a></li>
+				<li>|</li>
+				<li><a href="#">收藏本站</a></li>
+			</ul>
+		</div>
+		<!--导航 -->
+		<div class="content">
+
+			<!--logo-->
+			<div
+				style="float:left; width:230px; margin-top:25px; margin-left:140px;">
+				<img src="../images/logo2.png" width="179" height="70" alt="logo" />
+			</div>
+			<div class="nav">
+				<ul>
+					<li><a href="../index-1.jsp">首页</a></li>
+					<li><a href="#">家教</a></li>
+					<li><a href="tutor/addtutor1.jsp">家教发布</a></li>
+					<li><a href="tutor/search.jsp">高级搜索</a></li>
+					<li><a href="user/search.jsp">教员库</a></li>
+					<li><a href="user/addmyinfo.jsp">成为教员</a></li>
+					<li id="myinfo"><a href="User/showmyinfo/<%=session.getAttribute("id")%>">个人中心</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div
+			style="border-top:#4f9fdf solid 3px; width:100%; height:400px;margin-top:1px; position:absolute; z-index:1px;">
+			<div
+				style="width:70%; height:400px;margin-left:auto; margin-right:auto;  font:'微软雅黑'">
+				<div
+					style="border:#CCC thin solid; height:400px; margin-top:20px;background:#ffffff">
+					<div style="height:450px">
+						<div
+							style=" margin-left:10px;margin-top:10px;font-size:large;font-weight: bold;line-height:60px;border-bottom:#CCC thin solid; width:98%; height:50px;">操作成功</div>
+						<div style=" margin-left:100px;margin-top:100px">
+						<div><span id="jumpTo">3</span>秒后，返回主页 或者</div>
+						
+						<script type="text/javascript">countDown(3,'/index-1.jsp');</script>  
+						
+						<div style="margin-top:10px"><a href="/index-1.jsp">点击链接跳转</a></div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					style="border-top:#4F9FDF 2px solid;margin-top:10px; width:100%; height:100px">
+					<center>
+						<div style="margin-top:30px">版权所有&copy;广西师范大学计信学院
+							2013年10月16日</div>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

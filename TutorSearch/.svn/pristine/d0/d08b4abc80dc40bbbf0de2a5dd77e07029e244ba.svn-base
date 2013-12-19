@@ -1,0 +1,69 @@
+package tan.code.service;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.lucene.document.Document;
+import org.springframework.stereotype.Component;
+
+import tan.code.dao.TutorDao;
+import tan.code.model.Tutor;
+
+@Component
+public class TutorService {
+	private TutorDao tutorDao;
+
+	public TutorDao getTutorDao() {
+		return tutorDao;
+	}
+
+	@Resource
+	public void setTutorDao(TutorDao tutorDao) {
+		this.tutorDao = tutorDao;
+	}
+
+	private String indexPath = "E://Tutor";
+
+	public void add(Tutor tutor) {
+		tutorDao.add(indexPath, tutor);
+	}
+
+	public List<Tutor> search(String searchText) {
+
+		return tutorDao.search(indexPath, searchText);
+	}
+
+	public Tutor getTutorByDocmentId(int docid) {
+		Tutor tutor = null;
+		try {
+			Document document=tutorDao.getDocumentById(indexPath, docid);
+			tutor=new Tutor();
+			tutor.setTitle(document.get("title"));
+			tutor.setContent(document.get("content"));
+			tutor.setReq_major(document.get("req_major"));
+			tutor.setReq_sex(document.get("req_sex"));
+			tutor.setPay(Float.valueOf(document.get("pay")));
+			tutor.setPatriarch(document.get("patriarch"));
+			tutor.setPhone(document.get("phone"));
+
+			tutor.setGrade(document.get("grade"));
+			tutor.setSubject(document.get("subject"));
+			tutor.setBrowse(Integer.valueOf(document.get("browse")));
+
+			tutor.setProvince(document.get("province"));
+			tutor.setCity(document.get("city"));
+			tutor.setRegion(document.get("region"));
+
+			tutor.setDate(document.get("date"));
+			tutor.setEnd(document.get("end"));
+			tutor.setOthers(document.get("others"));
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tutor;
+	}
+}

@@ -1,0 +1,79 @@
+package tan.code.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.annotation.Resource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.stereotype.Component;
+
+import tan.code.model.UserInfo;
+import tan.code.utils.LuceneHelper;
+import tan.code.utils.SQLStringHelper;
+
+@Component
+public class UserInfoDao {
+
+	private JdbcTemplate jdbcTemplate;
+	private SQLStringHelper<UserInfo> sqlStringHelper;
+	private LuceneHelper<UserInfo> luceneHelper = new LuceneHelper<UserInfo>();
+	
+	
+	/**
+	 * 写入索引
+	 * @param indexWriterPath
+	 * @param userInfo
+	 */
+	public void addUserInfo(String indexWriterPath,UserInfo userInfo){
+		luceneHelper.add(indexWriterPath, userInfo);
+	}
+	
+	public int updateUserInfo(UserInfo userInfo,int u_id) {
+		return jdbcTemplate.update(sqlStringHelper.createUserInfoUpdate(userInfo, u_id));
+	}
+	
+	public UserInfo getUserInfo(int u_id) {
+		String sql = "select * from t_userinfo where u_id=?";
+		final UserInfo userInfo = new UserInfo();
+		jdbcTemplate.query(sql, new Object[] { u_id }, new RowCallbackHandler() {
+
+			@Override
+			public void processRow(ResultSet rs) throws SQLException {
+				// TODO Auto-generated method stub
+				userInfo.setId(rs.getInt("id"));
+				userInfo.setRealname(rs.getString("realname"));
+				userInfo.setPhone(rs.getString("phone"));
+				userInfo.setAge(rs.getInt("age"));
+				userInfo.setUniversity(rs.getString("university"));
+				userInfo.setMajor(rs.getString("major"));
+				userInfo.setAcademic(rs.getString("academic"));
+				userInfo.setGrade(rs.getString("grade"));
+				userInfo.setSex(rs.getString("sex"));
+				userInfo.setIntriduction(rs.getString("intriduction"));
+				userInfo.setOther(rs.getString("other"));
+			}
+		});
+		return userInfo;
+	}
+	
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	
+	@Resource
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	public SQLStringHelper<UserInfo> getSqlStringHelper() {
+		return sqlStringHelper;
+	}
+	@Resource
+	public void setSqlStringHelper(SQLStringHelper<UserInfo> sqlStringHelper) {
+		this.sqlStringHelper = sqlStringHelper;
+	}
+	
+	
+	
+}

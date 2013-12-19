@@ -1,0 +1,55 @@
+package tan.code.controller;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import tan.code.model.Tutor;
+import tan.code.service.TutorService;
+
+@Controller
+@RequestMapping("/tutor.do")
+public class TutorController {
+	private TutorService tutorService;
+	private List<Tutor> tutors;
+
+	public TutorService getTutorService() {
+		return tutorService;
+	}
+	@Resource
+	public void setTutorService(TutorService tutorService) {
+		this.tutorService = tutorService;
+	}
+
+
+	@RequestMapping(params = "method=add")
+	public String add(Tutor tutor) {
+
+		tutor.setId(0);
+		tutor.setBrowse(0);
+		tutor.setWb_num(0);
+		
+		String curdate = "";
+		Date dt = new Date(); // 获取当前系统时间，作为发布时间
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 日期格式
+		curdate = sdf.format(dt);
+		tutor.setDate(curdate);
+		tutorService.add(tutor);
+		return "success.jsp";
+	}
+
+	@RequestMapping(params = "method=search")
+	public String search(String searchText,ModelMap map) {	
+		tutors = tutorService.search(searchText);
+		map.put("tutors", tutors);
+		return "tutorslist.ftl";
+	}
+
+}
